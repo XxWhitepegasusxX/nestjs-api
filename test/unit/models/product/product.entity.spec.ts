@@ -1,4 +1,4 @@
-import { Product } from "./product.entity";
+import { Product } from "../../../../src/models/productModel/product.entity";
 
 describe('Product test', () => {
     it('should create a product', () => {
