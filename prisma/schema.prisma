@@ -9,3 +9,26 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Menu {
+  id       String    @id @default(uuid())
+  type     String
+  products Product[]
+}
+
+model Product {
+  id          String     @id @default(uuid())
+  price       Float
+  name        String     @unique
+  image       String     @unique
+  description String
+  category    Category[]
+  menu        Menu       @relation(fields: [menuId], references: [id])
+  menuId      String
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  name     String
+  products Product[]
+}
