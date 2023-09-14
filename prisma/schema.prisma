@@ -11,24 +11,26 @@ datasource db {
 }
 
 model Menu {
-  id       String    @id @default(uuid())
-  type     String
-  products Product[]
+  id         String    @id @default(uuid())
+  type       String
+  products   Product[]
+  created_at DateTime  @default(now())
 }
 
 model Product {
   id          String     @id @default(uuid())
   price       Float
   name        String     @unique
-  image       String     @unique
+  image       String?    @unique
   description String
   category    Category[]
-  menu        Menu       @relation(fields: [menuId], references: [id])
-  menuId      String
+  menu        Menu[]
+  created_at  DateTime   @default(now())
 }
 
 model Category {
-  id       String    @id @default(uuid())
-  name     String
-  products Product[]
+  id         String    @id @default(uuid())
+  name       String
+  products   Product[]
+  created_at DateTime  @default(now())
 }
