@@ -15,37 +15,37 @@ export class ProductController {
   }
 
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  async findAll() {
+    return await this.productService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findById(id);
+  async findOne(@Param('id') id: string) {
+    return await this.productService.findById(id);
   }
 
   @Get(':name')
-  findOneByName(@Param('name') name: string){
-    return this.productService.findByName(name);
+  async findOneByName(@Param('name') name: string){
+    return await this.productService.findByName(name);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(id, updateProductDto);
+  async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+    return await this.productService.update(id, updateProductDto);
   }
 
   @Put('menu/:id')
-  addToMenu(@Param('id') id: string, @Body() data: AddToDto){
-    return this.productService.addToMenu(id, data.menuId);
+  async addToMenu(@Param('id') id: string, @Body() data: AddToDto){
+    return await this.productService.addToMenu(id, data.menuId);
   }
 
   @Put('category/:id')
-  addToCategory(@Param('id') id: string, @Body() data: AddToDto){
-    return this.productService.addToCategory(id, data.categoryId);
+  async addToCategory(@Param('id') id: string, @Body() data: AddToDto){
+    return await this.productService.addToCategory(id, data.categoryId);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.productService.remove(id);
   }
 }
