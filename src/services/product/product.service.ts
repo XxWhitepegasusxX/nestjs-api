@@ -13,6 +13,11 @@ export class ProductService {
     try{
       const product = await this.prisma.product.create({
         data: createProductDto,
+        include: {
+          menu: true,
+          category: true,
+          image: true,
+        },
       })
       return product
     }catch(e){
@@ -22,7 +27,11 @@ export class ProductService {
 
   async findAll() {
     try{
-      const products = await this.prisma.product.findMany();
+      const products = await this.prisma.product.findMany({include: {
+        menu: true,
+        category: true,
+        image: true,
+      }});
       return products
     }catch(e){
       throw new AppError("Error while querying for all products: " + e.message)
@@ -34,9 +43,10 @@ export class ProductService {
       const product = await this.prisma.product.findUnique({
         where: {id},
         include: {
-          category: true,
           menu: true,
-        }
+          category: true,
+          image: true,
+        },
       })
       return product
     }catch(e){
@@ -47,7 +57,12 @@ export class ProductService {
   async findByName(name: string) {
     try{
       const product = await this.prisma.product.findUnique({
-        where: {name}
+        where: {name},
+        include: {
+          menu: true,
+          category: true,
+          image: true,
+        },
       })
       return product
     }catch(e){
@@ -59,6 +74,11 @@ export class ProductService {
     try{
       const updatedProduct = await this.prisma.product.update({
         where: { id },
+        include: {
+          menu: true,
+          category: true,
+          image: true,
+        },
         data: updateProductDto
       })
       return updatedProduct
@@ -111,6 +131,9 @@ export class ProductService {
     
     return await this.prisma.category.update({
       where: {id: categoryId},
+      include: {
+        products: true
+      },
       data: {
         products: {
           connect: {
@@ -119,6 +142,28 @@ export class ProductService {
         }
       }
     })
+  }
+
+  async addImage(id: string, imageName: string): Promise<Product>{
+    try{
+      return await this.prisma.product.update({
+        where: {id},
+        data: {
+          image:{
+            create: {
+             name: imageName, 
+            }
+          }
+        },
+        include: {
+          image: true,
+          menu: true,
+          category: true,
+        }
+      })
+    }catch(e){
+      throw new AppError("Something went wrong")
+    }
   }
 
 }

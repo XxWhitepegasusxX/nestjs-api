@@ -12,7 +12,7 @@ datasource db {
 
 model Menu {
   id         String    @id @default(uuid())
-  type       String @unique
+  type       String    @unique
   products   Product[]
   created_at DateTime  @default(now())
 }
@@ -21,7 +21,7 @@ model Product {
   id          String     @id @default(uuid())
   price       Float
   name        String     @unique
-  image       String?    @unique
+  image       Image[]
   description String
   category    Category[]
   menu        Menu[]
@@ -30,7 +30,14 @@ model Product {
 
 model Category {
   id         String    @id @default(uuid())
-  name       String @unique
+  name       String    @unique
+  products   Product[]
+  created_at DateTime  @default(now())
+}
+
+model Image {
+  id         String    @id @default(uuid())
+  name       String    @unique
   products   Product[]
   created_at DateTime  @default(now())
 }

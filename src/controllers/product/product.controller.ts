@@ -44,6 +44,11 @@ export class ProductController {
     return await this.productService.addToCategory(id, data.categoryId);
   }
 
+  @Put('image/:id')
+  async addImage(@Param('id') id: string, @Body() data: AddToDto){
+    return await this.productService.addImage(id, data.imageName);
+  }
+  
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.productService.remove(id);
