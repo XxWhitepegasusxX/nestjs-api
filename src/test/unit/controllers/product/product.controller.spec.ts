@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProductController } from '@controllers/productController/product.controller';
-import { ProductService } from '@services/productService/product.service';
-import { PrismaService } from '@services/prismaService/prisma.service';
+import { ProductController } from '@controllers/product/product.controller';
+import { ProductService } from '@services/product/product.service';
+import { PrismaService } from '@services/prisma/prisma.service';
 import db from '../../db';
 
 describe('ProductController', () => {

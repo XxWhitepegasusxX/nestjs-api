@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Product } from '@prisma/client';
-import { PrismaService } from '@services/prismaService/prisma.service';
-import { ProductService } from '@services/productService/product.service';
+import { PrismaService } from '@services/prisma/prisma.service';
+import { ProductService } from '@services/product/product.service';
 import db from '../../db';
 
 
