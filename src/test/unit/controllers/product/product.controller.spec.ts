@@ -29,7 +29,6 @@ describe('ProductController', () => {
       description: "Mais um produto",
       price: 10.90
     })
-    console.log(product)
     expect(product.name).toBe("Produto")
   })
 

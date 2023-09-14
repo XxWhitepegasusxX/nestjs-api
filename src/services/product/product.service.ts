@@ -5,6 +5,7 @@ import { AppError } from '@errors/AppError';
 import { PrismaService } from '@services/prisma/prisma.service';
 import { CreateProductDto } from '@dtos/product/create-product.dto';
 import { UpdateProductDto } from '@dtos/product/update-product.dto';
+import { Request } from 'express';
 
 @Injectable()
 export class ProductService {
@@ -144,14 +145,14 @@ export class ProductService {
     })
   }
 
-  async addImage(id: string, imageName: string): Promise<Product>{
+  async addImage(id: string, file: Express.Multer.File, req: Request): Promise<Product>{
     try{
       return await this.prisma.product.update({
         where: {id},
         data: {
           image:{
             create: {
-             name: imageName, 
+             name: `${req.protocol}://${req.get('host')}/files/${file.filename}`, 
             }
           }
         },
@@ -162,7 +163,7 @@ export class ProductService {
         }
       })
     }catch(e){
-      throw new AppError("Something went wrong")
+      throw new AppError("Something went wrong:" + e.message)
     }
   }
 

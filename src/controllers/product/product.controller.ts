@@ -1,13 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseInterceptors, UploadedFile, Req } from '@nestjs/common';
 
 import { ProductService } from '@services/product/product.service';
 import { CreateProductDto } from '@dtos/product/create-product.dto';
 import { UpdateProductDto } from '@dtos/product/update-product.dto';
 import { AddToDto } from '@dtos/product/add-to.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import * as path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+import { Request } from 'express';
+import { diskStorage } from 'multer';
+import multerConfig from 'src/utils/multer-config';
 
 @Controller('product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService){}
 
   @Post()
   async create(@Body() createProductDto: CreateProductDto) {
@@ -44,9 +50,11 @@ export class ProductController {
     return await this.productService.addToCategory(id, data.categoryId);
   }
 
-  @Put('image/:id')
-  async addImage(@Param('id') id: string, @Body() data: AddToDto){
-    return await this.productService.addImage(id, data.imageName);
+  @Put('/image/:id')
+  @UseInterceptors(FileInterceptor('file', multerConfig))
+  async addImage(@UploadedFile() file: Express.Multer.File, @Req() req: Request, @Param('id') id: string){
+    console.log('file', file)
+    return await this.productService.addImage(id, file, req);
   }
   
   @Delete(':id')
