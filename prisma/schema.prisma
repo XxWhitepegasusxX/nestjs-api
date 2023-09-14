@@ -12,7 +12,7 @@ datasource db {
 
 model Menu {
   id         String    @id @default(uuid())
-  type       String
+  type       String @unique
   products   Product[]
   created_at DateTime  @default(now())
 }
@@ -30,7 +30,7 @@ model Product {
 
 model Category {
   id         String    @id @default(uuid())
-  name       String
+  name       String @unique
   products   Product[]
   created_at DateTime  @default(now())
 }
