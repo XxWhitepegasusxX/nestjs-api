@@ -1,15 +1,16 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ProductService } from '../../services/productService/product.service';
-import { CreateProductDto } from '../../dtos/productDto/create-product.dto';
-import { UpdateProductDto } from '../../dtos/productDto/update-product.dto';
+
+import { CreateProductDto } from '@dtos/productDto/create-product.dto';
+import { UpdateProductDto } from '@dtos/productDto/update-product.dto';
+import { ProductService } from '@services/productService/product.service';
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  async create(@Body() createProductDto: CreateProductDto) {
+    return await this.productService.create(createProductDto);
   }
 
   @Get()
@@ -19,16 +20,21 @@ export class ProductController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+    return this.productService.findById(id);
+  }
+
+  @Get(':name')
+  findOneByName(@Param('name') name: string){
+    return this.productService.findByName(name);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+    return this.productService.update(id, updateProductDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+    return this.productService.remove(id);
   }
 }
