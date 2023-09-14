@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Product } from '@prisma/client';
+import { Category, Menu, Product } from '@prisma/client';
 
 import { AppError } from '@errors/AppError';
 import { PrismaService } from '@services/prismaService/prisma.service';
@@ -32,7 +32,11 @@ export class ProductService {
   async findById(id: string) {
     try{
       const product = await this.prisma.product.findUnique({
-        where: {id}
+        where: {id},
+        include: {
+          category: true,
+          menu: true,
+        }
       })
       return product
     }catch(e){
@@ -75,4 +79,46 @@ export class ProductService {
       throw new AppError("Error removing product: " + e.message);
     }
   }
+
+  async addToMenu(id: string, menuId: string): Promise<Menu> {
+    const menu: Menu = await this.prisma.menu.findUnique({ where: {id: menuId} })
+    const product: Product = await this.prisma.product.findUnique({ where: { id } })
+    if(!menu || !product){
+      throw new AppError("Menu or Product not found")
+    }
+    return await this.prisma.menu.update({
+      where: { id: menuId },
+      data: {
+        products: {
+          connect: {
+            id
+          }
+        }
+      },
+      include: {
+        products: true,
+      }
+    })
+  }
+
+  async addToCategory(id: string, categoryId: string): Promise<Category> {
+    const product = await this.prisma.product.findUnique({ where: {id} })
+    const category = await this.prisma.category.findUnique({ where: {id: categoryId} })
+    
+    if (!product || !category) {
+      throw new AppError("Product or Category not found")
+    }
+    
+    return await this.prisma.category.update({
+      where: {id: categoryId},
+      data: {
+        products: {
+          connect: {
+            id
+          }
+        }
+      }
+    })
+  }
+
 }

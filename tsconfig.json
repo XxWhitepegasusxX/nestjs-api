@@ -23,7 +23,8 @@
       "@dtos/*": ["./src/dtos/*"],
       "@models/*": ["./src/models/*"],
       "@modules/*": ["./src/modules/*"],
-      "@services/*": ["./src/services/*"]
+      "@services/*": ["./src/services/*"],
+      "@errors/*": ["./src/errors/*"],
     }
   }
 }
