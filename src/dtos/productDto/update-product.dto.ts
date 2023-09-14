@@ -1,4 +1,10 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateProductDto } from './create-product.dto';
+import { Prisma } from '@prisma/client';
 
-export class UpdateProductDto extends PartialType(CreateProductDto) {}
+export class UpdateProductDto implements Prisma.ProductUpdateInput {
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    price?: Prisma.FloatFieldUpdateOperationsInput | number;
+    image?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    category?: Prisma.CategoryUpdateManyWithoutProductsNestedInput;
+    menu?: Prisma.MenuUpdateManyWithoutProductsNestedInput;
+}
